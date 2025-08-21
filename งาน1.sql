@@ -72,3 +72,61 @@ order by 1
 
 
 
+select o.OrderID เลขใบสั่งซื้อ , c.CompanyName ลูกค้า ,o.ShipAddress ส่งไปที่
+from Orders o, Customers c, Employees e
+where o.CustomerID = c.CustomerID
+ AND o.EmployeeID=e.EmployeeID
+
+select o.OrderID เลขใบสั่งซื้อ , c.CompanyName ลูกค้า, E.FirstName ลูกค้า ,o.ShipAddress ส่งไปที่
+from Orders o 
+     join  Customers c on o.CustomerID= c.CustomerID
+     join  Employees e on o.EmployeeID= e.EmployeeID
+
+
+
+select e.EmployeeID , FirstName , count(*)as [จำนาน order]  
+from Employees e join Orders o on e.EmployeeID= o.EmployeeID 
+where year(OrderDate)=1998
+group by e.EmployeeID,FirstName
+order by 3 
+
+--ต้องการชื่อสินค้าที่ nancy ขายได้ ทังหมด ดรียงตามลำดับรหัสสินค้า
+select distinct p.ProductID , p.ProductName
+from Employees e join Orders o on e.EmployeeID = o.EmployeeID
+                 join [Order Details] od on o.OrderID = od.OrderID
+                 join Products p on od.ProductID = p.ProductID
+where e.FirstName = 'Nancy'
+order by ProductID
+
+
+-- ต้องการชื่อบริษัทลูกค้า Around the Horn ซื้อสินค้า
+
+select distinct s.Country
+from Customers c join Orders o on o.CustomerID = o.CustomerID
+                 join [Order Details] od on o.OrderID = od.OrderID
+                 join Products p on od.ProductID = od.ProductID
+                 join Suppliers  s on s.SupplierID = s.SupplierID
+where c.CompanyName = 'Around the Horn  ' 
+
+
+-- บริษัทลูกค้าชื่อ Aroun the Horn ซื้อสินค้าอะไรบ้างจำนานเท่าใด
+select  p.ProductID, p.ProductName ,sum(quantity) as [sum of quantity]
+from Customers c join Orders o on c.CustomerID = o.CustomerID
+                 join [Order Details] od  on od.OrderID = o.OrderID
+                 join Products p on p.ProductID = od.ProductID
+
+where c.CompanyName = 'Around the Horn  ' 
+group by p.ProductID , p.ProductName
+order by 1
+
+--ต้องการหมายเลขใบสื้งซื่่อ ชื่อพนักงาน เเละยอดขายในใบสั้งชื่อ 
+select o.OrderID , e.FirstName,
+       sum((od.Quantity * od.UnitPrice * (1-od.Discount))) as TotalCach
+from Orders o join Employees e on o.EmployeeID = e.EmployeeID
+              join [Order Details] od on o.OrderID = od.OrderID
+group by o.OrderID, e.FirstName
+order by OrderID 
+ 
+
+
+

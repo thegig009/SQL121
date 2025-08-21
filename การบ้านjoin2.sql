@@ -1,26 +1,212 @@
---°“√ Query ¢ÈÕ¡Ÿ≈®“°À≈“¬µ“√“ß (Join)
--- 1.   ®ß· ¥ß¢ÈÕ¡Ÿ≈√À— „∫ —Ëß´◊ÈÕ ™◊ËÕ∫√‘…—∑≈Ÿ°§È“ ™◊ËÕ·≈–π“¡ °ÿ≈æπ—°ß“π(„π§Õ≈—¡πÏ‡¥’¬«°—π) «—π∑’Ë —Ëß´◊ÈÕ ™◊ËÕ∫√‘…—∑¢π Ëß¢Õß ‡¡◊Õß·≈–ª√–‡∑»∑’Ë Ëß¢Õß‰ª √«¡∂÷ß¬Õ¥‡ß‘π∑’ËµÈÕß√—∫®“°≈Ÿ°§È“¥È«¬ 
-        
+--‡∏Å‡∏≤‡∏£ Query ‡∏Ç‡πâ‡∏≠‡∏°‡∏π‡∏•‡∏à‡∏≤‡∏Å‡∏´‡∏•‡∏≤‡∏¢‡∏ï‡∏≤‡∏£‡∏≤‡∏á (Join)
+-- 1.   ‡∏à‡∏á‡πÅ‡∏™‡∏î‡∏á‡∏Ç‡πâ‡∏≠‡∏°‡∏π‡∏•‡∏£‡∏´‡∏±‡∏™‡πÉ‡∏ö‡∏™‡∏±‡πà‡∏á‡∏ã‡∏∑‡πâ‡∏≠ ‡∏ä‡∏∑‡πà‡∏≠‡∏ö‡∏£‡∏¥‡∏©‡∏±‡∏ó‡∏•‡∏π‡∏Å‡∏Ñ‡πâ‡∏≤ ‡∏ä‡∏∑‡πà‡∏≠‡πÅ‡∏•‡∏∞‡∏ô‡∏≤‡∏°‡∏™‡∏Å‡∏∏‡∏•‡∏û‡∏ô‡∏±‡∏Å‡∏á‡∏≤‡∏ô(‡πÉ‡∏ô‡∏Ñ‡∏≠‡∏•‡∏±‡∏°‡∏ô‡πå‡πÄ‡∏î‡∏µ‡∏¢‡∏ß‡∏Å‡∏±‡∏ô) ‡∏ß‡∏±‡∏ô‡∏ó‡∏µ‡πà‡∏™‡∏±‡πà‡∏á‡∏ã‡∏∑‡πâ‡∏≠ ‡∏ä‡∏∑‡πà‡∏≠‡∏ö‡∏£‡∏¥‡∏©‡∏±‡∏ó‡∏Ç‡∏ô‡∏™‡πà‡∏á‡∏Ç‡∏≠‡∏á ‡πÄ‡∏°‡∏∑‡∏≠‡∏á‡πÅ‡∏•‡∏∞‡∏õ‡∏£‡∏∞‡πÄ‡∏ó‡∏®‡∏ó‡∏µ‡πà‡∏™‡πà‡∏á‡∏Ç‡∏≠‡∏á‡πÑ‡∏õ ‡∏£‡∏ß‡∏°‡∏ñ‡∏∂‡∏á‡∏¢‡∏≠‡∏î‡πÄ‡∏á‡∏¥‡∏ô‡∏ó‡∏µ‡πà‡∏ï‡πâ‡∏≠‡∏á‡∏£‡∏±‡∏ö‡∏à‡∏≤‡∏Å‡∏•‡∏π‡∏Å‡∏Ñ‡πâ‡∏≤‡∏î‡πâ‡∏ß‡∏¢ 
+        select o.OrderID, 
+       c.CompanyName as Customer,
+       (e.FirstName + ' ' + e.LastName) as EmployeeName,
+       o.OrderDate,
+       s.CompanyName AS Shipper,
+       o.ShipCity, o.ShipCountry,
+       sum(od.UnitPrice * od.Quantity * (1 - od.Discount)) as TotalAmount
+from Orders o
+JOIN Customers c on o.CustomerID = c.CustomerID
+JOIN Employees e on o.EmployeeID = e.EmployeeID
+JOIN Shippers s on o.ShipVia = s.ShipperID
+JOIN [Order Details] od on o.OrderID = od.OrderID
+group by o.OrderID, c.CompanyName, e.FirstName, e.LastName, o.OrderDate, s.CompanyName, o.ShipCity, o.ShipCountry
 
+-- 2.   ‡∏à‡∏á‡πÅ‡∏™‡∏î‡∏á ‡∏Ç‡πâ‡∏≠‡∏°‡∏π‡∏• ‡∏ä‡∏∑‡πà‡∏≠‡∏ö‡∏£‡∏¥‡∏©‡∏±‡∏ó‡∏•‡∏π‡∏Å‡∏Ñ‡πâ‡∏≤ ‡∏ä‡∏∑‡πà‡∏≠‡∏ú‡∏π‡πâ‡∏ï‡∏¥‡∏î‡∏ï‡πà‡∏≠ ‡πÄ‡∏°‡∏∑‡∏≠‡∏á ‡∏õ‡∏£‡∏∞‡πÄ‡∏ó‡∏® ‡∏à‡∏≥‡∏ô‡∏ß‡∏ô‡πÉ‡∏ö‡∏™‡∏±‡πà‡∏á‡∏ã‡∏∑‡πâ‡∏≠‡∏ó‡∏µ‡πà‡πÄ‡∏Å‡∏µ‡πà‡∏¢‡∏ß‡∏Ç‡πâ‡∏≠‡∏á‡πÅ‡∏•‡∏∞ ‡∏¢‡∏≠‡∏î‡∏Å‡∏≤‡∏£‡∏™‡∏±‡πà‡∏á‡∏ã‡∏∑‡πâ‡∏≠‡∏ó‡∏±‡πâ‡∏á‡∏´‡∏°‡∏î‡πÄ‡∏•‡∏∑‡∏≠‡∏Å‡∏°‡∏≤‡πÄ‡∏â‡∏û‡∏≤‡∏∞‡πÄ‡∏î‡∏∑‡∏≠‡∏ô ‡∏°‡∏Å‡∏£‡∏≤‡∏Ñ‡∏°‡∏ñ‡∏∂‡∏á ‡∏°‡∏µ‡∏ô‡∏≤‡∏Ñ‡∏°  1997
+select c.CompanyName, c.ContactName, c.City, c.Country,
+       count(o.OrderID) as OrderCount,
+       sum(od.UnitPrice * od.Quantity * (1 - od.Discount)) as TotalAmount
+from Orders o
+JOIN Customers c on o.CustomerID = c.CustomerID
+JOIN [Order Details] od on o.OrderID = od.OrderID
+where year(o.OrderDate) = 1997 
+  AND  month(o.OrderDate) BETWEEN 1 AND 3
+GROUP BY c.CompanyName, c.ContactName, c.City, c.Country
 
+-- 3.   ‡∏à‡∏á‡πÅ‡∏™‡∏î‡∏á‡∏ä‡∏∑‡πà‡∏≠‡πÄ‡∏ï‡πá‡∏°‡∏Ç‡∏≠‡∏á‡∏û‡∏ô‡∏±‡∏Å‡∏á‡∏≤‡∏ô ‡∏ï‡∏≥‡πÅ‡∏´‡∏ô‡πà‡∏á ‡πÄ‡∏ö‡∏≠‡∏£‡πå‡πÇ‡∏ó‡∏£‡∏®‡∏±‡∏û‡∏ó‡πå ‡∏à‡∏≥‡∏ô‡∏ß‡∏ô‡πÉ‡∏ö‡∏™‡∏±‡πà‡∏á‡∏ã‡∏∑‡πâ‡∏≠ ‡∏£‡∏ß‡∏°‡∏ñ‡∏∂‡∏á‡∏¢‡∏≠‡∏î‡∏Å‡∏≤‡∏£‡∏™‡∏±‡πà‡∏á‡∏ã‡∏∑‡πâ‡∏≠‡∏ó‡∏±‡πâ‡∏á‡∏´‡∏°‡∏î‡πÉ‡∏ô‡πÄ‡∏î‡∏∑‡∏≠‡∏ô‡∏û‡∏§‡∏®‡∏à‡∏¥‡∏Å‡∏≤‡∏¢‡∏ô ‡∏ò‡∏±‡∏ô‡∏ß‡∏≤‡∏Ñ‡∏° 2539  ‡πÇ‡∏î‡∏¢‡∏ó‡∏µ‡πà‡πÉ‡∏ö‡∏™‡∏±‡πà‡∏á‡∏ã‡∏∑‡πâ‡∏≠‡∏ô‡∏±‡πâ‡∏ô‡∏ñ‡∏π‡∏Å‡∏™‡πà‡∏á‡πÑ‡∏õ‡∏õ‡∏£‡∏∞‡πÄ‡∏ó‡∏® USA, Canada ‡∏´‡∏£‡∏∑‡∏≠ Mexico
 
+select (e.FirstName + ' ' + e.LastName) as EmployeeName,
+       e.Title, e.HomePhone,
+       count(DISTINCT o.OrderID) as OrderCount,
+       sum(od.UnitPrice * od.Quantity * (1 - od.Discount)) as TotalAmount
+from Employees e
+JOIN Orders o on e.EmployeeID = o.EmployeeID
+JOIN [Order Details] od on o.OrderID = od.OrderID
+where YEAR(o.OrderDate) = 1996 
+  AND MONTH(o.OrderDate) IN (11,12)
+  AND o.ShipCountry IN ('USA','Canada','Mexico')
+GROUP BY e.FirstName, e.LastName, e.Title, e.HomePhone
 
--- 2.   ®ß· ¥ß ¢ÈÕ¡Ÿ≈ ™◊ËÕ∫√‘…—∑≈Ÿ°§È“ ™◊ËÕºŸÈµ‘¥µËÕ ‡¡◊Õß ª√–‡∑» ®”π«π„∫ —Ëß´◊ÈÕ∑’Ë‡°’Ë¬«¢ÈÕß·≈– ¬Õ¥°“√ —Ëß´◊ÈÕ∑—ÈßÀ¡¥‡≈◊Õ°¡“‡©æ“–‡¥◊Õπ ¡°√“§¡∂÷ß ¡’π“§¡  1997
--- 3.   ®ß· ¥ß™◊ËÕ‡µÁ¡¢Õßæπ—°ß“π µ”·ÀπËß ‡∫Õ√Ï‚∑√»—æ∑Ï ®”π«π„∫ —Ëß´◊ÈÕ √«¡∂÷ß¬Õ¥°“√ —Ëß´◊ÈÕ∑—ÈßÀ¡¥„π‡¥◊Õπæƒ»®‘°“¬π ∏—π«“§¡ 2539  ‚¥¬∑’Ë„∫ —Ëß´◊ÈÕπ—Èπ∂Ÿ° Ëß‰ªª√–‡∑» USA, Canada À√◊Õ Mexico
--- 4.   ®ß· ¥ß√À—  ‘π§È“ ™◊ËÕ ‘π§È“ √“§“µËÕÀπË«¬  ·≈–®”π«π∑—ÈßÀ¡¥∑’Ë¢“¬‰¥È„π‡¥◊Õπ ¡‘∂ÿπ“¬π 2540
--- 5.   ®ß· ¥ß√À—  ‘π§È“ ™◊ËÕ ‘π§È“ √“§“µËÕÀπË«¬ ·≈–¬Õ¥‡ß‘π∑—ÈßÀ¡¥∑’Ë¢“¬‰¥È „π‡¥◊Õπ ¡°√“§¡ 2540 · ¥ß‡ªÁπ∑»π‘¬¡ 2 µ”·ÀπËß
--- 6.   ®ß· ¥ß™◊ËÕ∫√‘…—∑µ—«·∑π®”ÀπË“¬ ™◊ËÕºŸÈµ‘¥µËÕ ‡∫Õ√Ï‚∑√ ‡∫Õ√Ï Fax √À—  ™◊ËÕ ‘π§È“ √“§“ ®”π«π√«¡∑’Ë®”ÀπË“¬‰¥È„πª’ 1996
--- 7.   ®ß· ¥ß√À—  ‘π§È“ ™◊ËÕ ‘π§È“ √“§“µËÕÀπË«¬  ·≈–®”π«π∑—ÈßÀ¡¥∑’Ë¢“¬‰¥È‡©æ“–¢Õß ‘π§È“∑’Ë‡ªÁπª√–‡¿∑ Seafood ·≈– Ëß‰ªª√–‡∑» USA „πª’ 1997
--- 8.   ®ß· ¥ß™◊ËÕ‡µÁ¡¢Õßæπ—°ß“π∑’Ë¡’µ”·ÀπËß Sale Representative Õ“¬ÿß“π‡ªÁπª’ ·≈–®”π«π„∫ —Ëß´◊ÈÕ∑—ÈßÀ¡¥∑’Ë√—∫º‘¥™Õ∫„πª’ 1998
--- 9.   · ¥ß™◊ËÕ‡µÁ¡æπ—°ß“π µ”·ÀπËßß“π ¢Õßæπ—°ß“π∑’Ë¢“¬ ‘π§È“„ÀÈ∫√‘…—∑ Frankenversand „πª’  1996
--- 10.  ®ß· ¥ß™◊ËÕ °ÿ≈æπ—°ß“π„π§Õ≈—¡πÏ‡¥’¬«°—π ¬Õ¥¢“¬ ‘π§È“ª√–‡¿∑ Beverage ∑’Ë·µË≈–§π¢“¬‰¥È „πª’ 1996
--- 11.  ®ß· ¥ß™◊ËÕª√–‡¿∑ ‘π§È“ √À—  ‘π§È“ ™◊ËÕ ‘π§È“ ¬Õ¥‡ß‘π∑’Ë¢“¬‰¥È(À—° Ë«π≈¥¥È«¬) „π‡¥◊Õπ¡°√“§¡ - ¡’π“§¡ 2540 ‚¥¬ ¡’æπ—°ß“πºŸÈ¢“¬§◊Õ Nancy
--- 12.  ®ß· ¥ß™◊ËÕ∫√‘…—∑≈Ÿ°§È“∑’Ë´◊ÈÕ ‘π§È“ª√–‡¿∑ Seafood „πª’ 1997
--- 13.  ®ß· ¥ß™◊ËÕ∫√‘…—∑¢π Ëß ‘π§È“ ∑’Ë Ëß ‘π§È“„ÀÈ ≈Ÿ°§È“∑’Ë¡’∑’Ëµ—Èß Õ¬ŸË∑’Ë∂ππ Johnstown Road · ¥ß«—π∑’Ë Ëß ‘π§È“¥È«¬ (√Ÿª·∫∫ 106)
--- 14.  ®ß· ¥ß√À— ª√–‡¿∑ ‘π§È“ ™◊ËÕª√–‡¿∑ ‘π§È“ ®”π«π ‘π§È“„πª√–‡¿∑π—Èπ ·≈–¬Õ¥√«¡∑’Ë¢“¬‰¥È∑—ÈßÀ¡¥ · ¥ß‡ªÁπ∑»π‘¬¡ 4 µ”·ÀπËß À—° Ë«π≈¥
--- 15.  ®ß· ¥ß™◊ËÕ∫√‘…—∑≈Ÿ°§È“ ∑’ËÕ¬ŸË„π‡¡◊Õß London , Cowes ∑’Ë —Ëß´◊ÈÕ ‘π§È“ª√–‡¿∑ Seafood ®“°∫√‘…—∑µ—«·∑π®”ÀπË“¬∑’ËÕ¬ŸË„πª√–‡∑»≠’ËªÿËπ√«¡¡Ÿ≈§Ë“ÕÕ°¡“‡ªÁπ‡ß‘π¥È«¬
--- 16.  · ¥ß√À— ∫√‘…—∑¢π Ëß ™◊ËÕ∫√‘…—∑¢π Ëß ®”π«πorders ∑’Ë Ëß §Ë“¢π Ëß∑—ÈßÀ¡¥  ‡©æ“–∑’Ë Ëß‰ªª√–‡∑» USA
--- 17.  ®ß· ¥ß‡µÁ¡™◊ËÕæπ—°ß“π ∑’Ë¡’Õ“¬ÿ¡“°°«Ë“ 60ª’ ®ß· ¥ß ™◊ËÕ∫√‘…—∑≈Ÿ°§È“,™◊ËÕºŸÈµ‘¥µËÕ,‡∫Õ√Ï‚∑√,Fax,¬Õ¥√«¡¢Õß ‘π§È“ª√–‡¿∑ Condiment ∑’Ë≈Ÿ°§È“·µË≈–√“¬´◊ÈÕ · ¥ß‡ªÁπ∑»π‘¬¡4µ”·ÀπËß,·≈–· ¥ß‡©æ“–≈Ÿ°§È“∑’Ë¡’‡∫Õ√Ï·ø°´Ï
--- 18.  ®ß· ¥ß¢ÈÕ¡Ÿ≈«Ë“ «—π∑’Ë  3 ¡‘∂ÿπ“¬π 2541 æπ—°ß“π·µË≈–§π ¢“¬ ‘π§È“ ‰¥È‡ªÁπ¬Õ¥‡ß‘π‡∑Ë“„¥ æ√ÈÕ¡∑—Èß· ¥ß™◊ËÕ§π∑’Ë‰¡Ë‰¥È¢“¬¢Õß¥È«¬
--- 19.  ®ß· ¥ß√À— √“¬°“√ —Ëß´◊ÈÕ ™◊ËÕæπ—°ß“π ™◊ËÕ∫√‘…—∑≈Ÿ°§È“ ‡∫Õ√Ï‚∑√ «—π∑’Ë≈Ÿ°§È“µÈÕß°“√ ‘π§È“ ‡©æ“–√“¬°“√∑’Ë¡’æπ—°ß“π™◊ËÕ¡“°“‡√Áµ‡ªÁπ§π√—∫º‘¥™Õ∫æ√ÈÕ¡∑—Èß· ¥ß¬Õ¥‡ß‘π√«¡∑’Ë≈Ÿ°§È“µÈÕß™”√–¥È«¬ (∑»π‘¬¡ 2 µ”·ÀπËß)
--- 20.  ®ß· ¥ß™◊ËÕ‡µÁ¡æπ—°ß“π Õ“¬ÿß“π‡ªÁπª’ ·≈–‡ªÁπ‡¥◊Õπ ¬Õ¥¢“¬√«¡∑’Ë¢“¬‰¥È ‡≈◊Õ°¡“‡©æ“–≈Ÿ°§È“∑’ËÕ¬ŸË„π USA, Canada, Mexico ·≈–Õ¬ŸË„π‰µ√¡“»·√°¢Õßª’ 2541
+-- 4.   ‡∏à‡∏á‡πÅ‡∏™‡∏î‡∏á‡∏£‡∏´‡∏±‡∏™‡∏™‡∏¥‡∏ô‡∏Ñ‡πâ‡∏≤ ‡∏ä‡∏∑‡πà‡∏≠‡∏™‡∏¥‡∏ô‡∏Ñ‡πâ‡∏≤ ‡∏£‡∏≤‡∏Ñ‡∏≤‡∏ï‡πà‡∏≠‡∏´‡∏ô‡πà‡∏ß‡∏¢  ‡πÅ‡∏•‡∏∞‡∏à‡∏≥‡∏ô‡∏ß‡∏ô‡∏ó‡∏±‡πâ‡∏á‡∏´‡∏°‡∏î‡∏ó‡∏µ‡πà‡∏Ç‡∏≤‡∏¢‡πÑ‡∏î‡πâ‡πÉ‡∏ô‡πÄ‡∏î‡∏∑‡∏≠‡∏ô ‡∏°‡∏¥‡∏ñ‡∏∏‡∏ô‡∏≤‡∏¢‡∏ô 2540
+SELECT p.ProductID, p.ProductName, p.UnitPrice,
+       SUM(od.Quantity) AS TotalQty
+FROM [Order Details] od
+JOIN Products p ON od.ProductID = p.ProductID
+JOIN Orders o ON od.OrderID = o.OrderID
+WHERE YEAR(o.OrderDate) = 1997 AND MONTH(o.OrderDate) = 6
+GROUP BY p.ProductID, p.ProductName, p.UnitPrice
+
+-- 5.   ‡∏à‡∏á‡πÅ‡∏™‡∏î‡∏á‡∏£‡∏´‡∏±‡∏™‡∏™‡∏¥‡∏ô‡∏Ñ‡πâ‡∏≤ ‡∏ä‡∏∑‡πà‡∏≠‡∏™‡∏¥‡∏ô‡∏Ñ‡πâ‡∏≤ ‡∏£‡∏≤‡∏Ñ‡∏≤‡∏ï‡πà‡∏≠‡∏´‡∏ô‡πà‡∏ß‡∏¢ ‡πÅ‡∏•‡∏∞‡∏¢‡∏≠‡∏î‡πÄ‡∏á‡∏¥‡∏ô‡∏ó‡∏±‡πâ‡∏á‡∏´‡∏°‡∏î‡∏ó‡∏µ‡πà‡∏Ç‡∏≤‡∏¢‡πÑ‡∏î‡πâ ‡πÉ‡∏ô‡πÄ‡∏î‡∏∑‡∏≠‡∏ô ‡∏°‡∏Å‡∏£‡∏≤‡∏Ñ‡∏° 2540 ‡πÅ‡∏™‡∏î‡∏á‡πÄ‡∏õ‡πá‡∏ô‡∏ó‡∏®‡∏ô‡∏¥‡∏¢‡∏° 2 ‡∏ï‡∏≥‡πÅ‡∏´‡∏ô‡πà‡∏á
+SELECT p.ProductID, p.ProductName, p.UnitPrice,
+       ROUND(SUM(od.UnitPrice * od.Quantity * (1 - od.Discount)), 2) AS TotalSales
+FROM [Order Details] od
+JOIN Products p ON od.ProductID = p.ProductID
+JOIN Orders o ON od.OrderID = o.OrderID
+WHERE YEAR(o.OrderDate) = 1997 AND MONTH(o.OrderDate) = 1
+GROUP BY p.ProductID, p.ProductName, p.UnitPrice
+-- 6.   ‡∏à‡∏á‡πÅ‡∏™‡∏î‡∏á‡∏ä‡∏∑‡πà‡∏≠‡∏ö‡∏£‡∏¥‡∏©‡∏±‡∏ó‡∏ï‡∏±‡∏ß‡πÅ‡∏ó‡∏ô‡∏à‡∏≥‡∏´‡∏ô‡πà‡∏≤‡∏¢ ‡∏ä‡∏∑‡πà‡∏≠‡∏ú‡∏π‡πâ‡∏ï‡∏¥‡∏î‡∏ï‡πà‡∏≠ ‡πÄ‡∏ö‡∏≠‡∏£‡πå‡πÇ‡∏ó‡∏£ ‡πÄ‡∏ö‡∏≠‡∏£‡πå Fax ‡∏£‡∏´‡∏±‡∏™ ‡∏ä‡∏∑‡πà‡∏≠‡∏™‡∏¥‡∏ô‡∏Ñ‡πâ‡∏≤ ‡∏£‡∏≤‡∏Ñ‡∏≤ ‡∏à‡∏≥‡∏ô‡∏ß‡∏ô‡∏£‡∏ß‡∏°‡∏ó‡∏µ‡πà‡∏à‡∏≥‡∏´‡∏ô‡πà‡∏≤‡∏¢‡πÑ‡∏î‡πâ‡πÉ‡∏ô‡∏õ‡∏µ 1996
+SELECT s.CompanyName, s.ContactName, s.Phone, s.Fax,
+       p.ProductID, p.ProductName, p.UnitPrice,
+       SUM(od.Quantity) AS TotalQty
+FROM Suppliers s
+JOIN Products p ON s.SupplierID = p.SupplierID
+JOIN [Order Details] od ON p.ProductID = od.ProductID
+JOIN Orders o ON od.OrderID = o.OrderID
+WHERE YEAR(o.OrderDate) = 1996
+GROUP BY s.CompanyName, s.ContactName, s.Phone, s.Fax, p.ProductID, p.ProductName, p.UnitPrice
+
+-- 7.   ‡∏à‡∏á‡πÅ‡∏™‡∏î‡∏á‡∏£‡∏´‡∏±‡∏™‡∏™‡∏¥‡∏ô‡∏Ñ‡πâ‡∏≤ ‡∏ä‡∏∑‡πà‡∏≠‡∏™‡∏¥‡∏ô‡∏Ñ‡πâ‡∏≤ ‡∏£‡∏≤‡∏Ñ‡∏≤‡∏ï‡πà‡∏≠‡∏´‡∏ô‡πà‡∏ß‡∏¢  ‡πÅ‡∏•‡∏∞‡∏à‡∏≥‡∏ô‡∏ß‡∏ô‡∏ó‡∏±‡πâ‡∏á‡∏´‡∏°‡∏î‡∏ó‡∏µ‡πà‡∏Ç‡∏≤‡∏¢‡πÑ‡∏î‡πâ‡πÄ‡∏â‡∏û‡∏≤‡∏∞‡∏Ç‡∏≠‡∏á‡∏™‡∏¥‡∏ô‡∏Ñ‡πâ‡∏≤‡∏ó‡∏µ‡πà‡πÄ‡∏õ‡πá‡∏ô‡∏õ‡∏£‡∏∞‡πÄ‡∏†‡∏ó Seafood ‡πÅ‡∏•‡∏∞‡∏™‡πà‡∏á‡πÑ‡∏õ‡∏õ‡∏£‡∏∞‡πÄ‡∏ó‡∏® USA ‡πÉ‡∏ô‡∏õ‡∏µ 1997
+SELECT p.ProductID, p.ProductName, p.UnitPrice,
+       SUM(od.Quantity) AS TotalQty
+FROM Products p
+JOIN Categories c ON p.CategoryID = c.CategoryID
+JOIN [Order Details] od ON p.ProductID = od.ProductID
+JOIN Orders o ON od.OrderID = o.OrderID
+WHERE c.CategoryName = 'Seafood'
+  AND o.ShipCountry = 'USA'
+  AND YEAR(o.OrderDate) = 1997
+GROUP BY p.ProductID, p.ProductName, p.UnitPrice
+-- 8.   ‡∏à‡∏á‡πÅ‡∏™‡∏î‡∏á‡∏ä‡∏∑‡πà‡∏≠‡πÄ‡∏ï‡πá‡∏°‡∏Ç‡∏≠‡∏á‡∏û‡∏ô‡∏±‡∏Å‡∏á‡∏≤‡∏ô‡∏ó‡∏µ‡πà‡∏°‡∏µ‡∏ï‡∏≥‡πÅ‡∏´‡∏ô‡πà‡∏á Sale Representative ‡∏≠‡∏≤‡∏¢‡∏∏‡∏á‡∏≤‡∏ô‡πÄ‡∏õ‡πá‡∏ô‡∏õ‡∏µ ‡πÅ‡∏•‡∏∞‡∏à‡∏≥‡∏ô‡∏ß‡∏ô‡πÉ‡∏ö‡∏™‡∏±‡πà‡∏á‡∏ã‡∏∑‡πâ‡∏≠‡∏ó‡∏±‡πâ‡∏á‡∏´‡∏°‡∏î‡∏ó‡∏µ‡πà‡∏£‡∏±‡∏ö‡∏ú‡∏¥‡∏î‡∏ä‡∏≠‡∏ö‡πÉ‡∏ô‡∏õ‡∏µ 1998
+SELECT (e.FirstName + ' ' + e.LastName) AS EmployeeName,
+       e.Title,
+       DATEDIFF(YEAR, e.HireDate, GETDATE()) AS WorkYears,
+       COUNT(DISTINCT o.OrderID) AS OrderCount
+FROM Employees e
+LEFT JOIN Orders o ON e.EmployeeID = o.EmployeeID AND YEAR(o.OrderDate)=1998
+WHERE e.Title = 'Sales Representative'
+GROUP BY e.FirstName, e.LastName, e.Title, e.HireDate
+
+-- 9.   ‡πÅ‡∏™‡∏î‡∏á‡∏ä‡∏∑‡πà‡∏≠‡πÄ‡∏ï‡πá‡∏°‡∏û‡∏ô‡∏±‡∏Å‡∏á‡∏≤‡∏ô ‡∏ï‡∏≥‡πÅ‡∏´‡∏ô‡πà‡∏á‡∏á‡∏≤‡∏ô ‡∏Ç‡∏≠‡∏á‡∏û‡∏ô‡∏±‡∏Å‡∏á‡∏≤‡∏ô‡∏ó‡∏µ‡πà‡∏Ç‡∏≤‡∏¢‡∏™‡∏¥‡∏ô‡∏Ñ‡πâ‡∏≤‡πÉ‡∏´‡πâ‡∏ö‡∏£‡∏¥‡∏©‡∏±‡∏ó Frankenversand ‡πÉ‡∏ô‡∏õ‡∏µ  1996
+SELECT DISTINCT (e.FirstName + ' ' + e.LastName) AS EmployeeName, e.Title
+FROM Employees e
+JOIN Orders o ON e.EmployeeID = o.EmployeeID
+JOIN Customers c ON o.CustomerID = c.CustomerID
+WHERE c.CompanyName = 'Frankenversand'
+  AND YEAR(o.OrderDate) = 1996
+
+-- 10.  ‡∏à‡∏á‡πÅ‡∏™‡∏î‡∏á‡∏ä‡∏∑‡πà‡∏≠‡∏™‡∏Å‡∏∏‡∏•‡∏û‡∏ô‡∏±‡∏Å‡∏á‡∏≤‡∏ô‡πÉ‡∏ô‡∏Ñ‡∏≠‡∏•‡∏±‡∏°‡∏ô‡πå‡πÄ‡∏î‡∏µ‡∏¢‡∏ß‡∏Å‡∏±‡∏ô ‡∏¢‡∏≠‡∏î‡∏Ç‡∏≤‡∏¢‡∏™‡∏¥‡∏ô‡∏Ñ‡πâ‡∏≤‡∏õ‡∏£‡∏∞‡πÄ‡∏†‡∏ó Beverage ‡∏ó‡∏µ‡πà‡πÅ‡∏ï‡πà‡∏•‡∏∞‡∏Ñ‡∏ô‡∏Ç‡∏≤‡∏¢‡πÑ‡∏î‡πâ ‡πÉ‡∏ô‡∏õ‡∏µ 1996
+SELECT (e.FirstName + ' ' + e.LastName) AS EmployeeName,
+       SUM(od.UnitPrice * od.Quantity * (1 - od.Discount)) AS BeverageSales
+FROM Employees e
+JOIN Orders o ON e.EmployeeID = o.EmployeeID
+JOIN [Order Details] od ON o.OrderID = od.OrderID
+JOIN Products p ON od.ProductID = p.ProductID
+JOIN Categories c ON p.CategoryID = c.CategoryID
+WHERE c.CategoryName = 'Beverages' AND YEAR(o.OrderDate) = 1996
+GROUP BY e.FirstName, e.LastName
+-- 11.  ‡∏à‡∏á‡πÅ‡∏™‡∏î‡∏á‡∏ä‡∏∑‡πà‡∏≠‡∏õ‡∏£‡∏∞‡πÄ‡∏†‡∏ó‡∏™‡∏¥‡∏ô‡∏Ñ‡πâ‡∏≤ ‡∏£‡∏´‡∏±‡∏™‡∏™‡∏¥‡∏ô‡∏Ñ‡πâ‡∏≤ ‡∏ä‡∏∑‡πà‡∏≠‡∏™‡∏¥‡∏ô‡∏Ñ‡πâ‡∏≤ ‡∏¢‡∏≠‡∏î‡πÄ‡∏á‡∏¥‡∏ô‡∏ó‡∏µ‡πà‡∏Ç‡∏≤‡∏¢‡πÑ‡∏î‡πâ(‡∏´‡∏±‡∏Å‡∏™‡πà‡∏ß‡∏ô‡∏•‡∏î‡∏î‡πâ‡∏ß‡∏¢) ‡πÉ‡∏ô‡πÄ‡∏î‡∏∑‡∏≠‡∏ô‡∏°‡∏Å‡∏£‡∏≤‡∏Ñ‡∏° - ‡∏°‡∏µ‡∏ô‡∏≤‡∏Ñ‡∏° 2540 ‡πÇ‡∏î‡∏¢ ‡∏°‡∏µ‡∏û‡∏ô‡∏±‡∏Å‡∏á‡∏≤‡∏ô‡∏ú‡∏π‡πâ‡∏Ç‡∏≤‡∏¢‡∏Ñ‡∏∑‡∏≠ Nancy
+SELECT c.CategoryName, p.ProductID, p.ProductName,
+       SUM(od.UnitPrice * od.Quantity * (1 - od.Discount)) AS TotalSales
+FROM Employees e
+JOIN Orders o ON e.EmployeeID = o.EmployeeID
+JOIN [Order Details] od ON o.OrderID = od.OrderID
+JOIN Products p ON od.ProductID = p.ProductID
+JOIN Categories c ON p.CategoryID = c.CategoryID
+WHERE e.FirstName = 'Nancy'
+  AND YEAR(o.OrderDate) = 1997
+  AND MONTH(o.OrderDate) BETWEEN 1 AND 3
+GROUP BY c.CategoryName, p.ProductID, p.ProductName
+-- 12.  ‡∏à‡∏á‡πÅ‡∏™‡∏î‡∏á‡∏ä‡∏∑‡πà‡∏≠‡∏ö‡∏£‡∏¥‡∏©‡∏±‡∏ó‡∏•‡∏π‡∏Å‡∏Ñ‡πâ‡∏≤‡∏ó‡∏µ‡πà‡∏ã‡∏∑‡πâ‡∏≠‡∏™‡∏¥‡∏ô‡∏Ñ‡πâ‡∏≤‡∏õ‡∏£‡∏∞‡πÄ‡∏†‡∏ó Seafood ‡πÉ‡∏ô‡∏õ‡∏µ 1997
+SELECT DISTINCT cu.CompanyName
+FROM Customers cu
+JOIN Orders o ON cu.CustomerID = o.CustomerID
+JOIN [Order Details] od ON o.OrderID = od.OrderID
+JOIN Products p ON od.ProductID = p.ProductID
+JOIN Categories c ON p.CategoryID = c.CategoryID
+WHERE c.CategoryName = 'Seafood' AND YEAR(o.OrderDate) = 1997
+
+-- 13.  ‡∏à‡∏á‡πÅ‡∏™‡∏î‡∏á‡∏ä‡∏∑‡πà‡∏≠‡∏ö‡∏£‡∏¥‡∏©‡∏±‡∏ó‡∏Ç‡∏ô‡∏™‡πà‡∏á‡∏™‡∏¥‡∏ô‡∏Ñ‡πâ‡∏≤ ‡∏ó‡∏µ‡πà‡∏™‡πà‡∏á‡∏™‡∏¥‡∏ô‡∏Ñ‡πâ‡∏≤‡πÉ‡∏´‡πâ ‡∏•‡∏π‡∏Å‡∏Ñ‡πâ‡∏≤‡∏ó‡∏µ‡πà‡∏°‡∏µ‡∏ó‡∏µ‡πà‡∏ï‡∏±‡πâ‡∏á ‡∏≠‡∏¢‡∏π‡πà‡∏ó‡∏µ‡πà‡∏ñ‡∏ô‡∏ô Johnstown Road ‡πÅ‡∏™‡∏î‡∏á‡∏ß‡∏±‡∏ô‡∏ó‡∏µ‡πà‡∏™‡πà‡∏á‡∏™‡∏¥‡∏ô‡∏Ñ‡πâ‡∏≤‡∏î‡πâ‡∏ß‡∏¢ (‡∏£‡∏π‡∏õ‡πÅ‡∏ö‡∏ö 106)
+SELECT DISTINCT s.CompanyName, CONVERT(VARCHAR, o.ShippedDate, 106) AS ShippedDate
+FROM Orders o
+JOIN Shippers s ON o.ShipVia = s.ShipperID
+JOIN Customers c ON o.CustomerID = c.CustomerID
+WHERE c.Address LIKE '%Johnstown Road%'
+
+-- 14.  ‡∏à‡∏á‡πÅ‡∏™‡∏î‡∏á‡∏£‡∏´‡∏±‡∏™‡∏õ‡∏£‡∏∞‡πÄ‡∏†‡∏ó‡∏™‡∏¥‡∏ô‡∏Ñ‡πâ‡∏≤ ‡∏ä‡∏∑‡πà‡∏≠‡∏õ‡∏£‡∏∞‡πÄ‡∏†‡∏ó‡∏™‡∏¥‡∏ô‡∏Ñ‡πâ‡∏≤ ‡∏à‡∏≥‡∏ô‡∏ß‡∏ô‡∏™‡∏¥‡∏ô‡∏Ñ‡πâ‡∏≤‡πÉ‡∏ô‡∏õ‡∏£‡∏∞‡πÄ‡∏†‡∏ó‡∏ô‡∏±‡πâ‡∏ô ‡πÅ‡∏•‡∏∞‡∏¢‡∏≠‡∏î‡∏£‡∏ß‡∏°‡∏ó‡∏µ‡πà‡∏Ç‡∏≤‡∏¢‡πÑ‡∏î‡πâ‡∏ó‡∏±‡πâ‡∏á‡∏´‡∏°‡∏î ‡πÅ‡∏™‡∏î‡∏á‡πÄ‡∏õ‡πá‡∏ô‡∏ó‡∏®‡∏ô‡∏¥‡∏¢‡∏° 4 ‡∏ï‡∏≥‡πÅ‡∏´‡∏ô‡πà‡∏á ‡∏´‡∏±‡∏Å‡∏™‡πà‡∏ß‡∏ô‡∏•‡∏î
+SELECT c.CategoryID, c.CategoryName,
+       COUNT(p.ProductID) AS ProductCount,
+       ROUND(SUM(od.UnitPrice * od.Quantity * (1 - od.Discount)),4) AS TotalSales
+FROM Categories c
+JOIN Products p ON c.CategoryID = p.CategoryID
+JOIN [Order Details] od ON p.ProductID = od.ProductID
+JOIN Orders o ON od.OrderID = o.OrderID
+GROUP BY c.CategoryID, c.CategoryName
+-- 15.  ‡∏à‡∏á‡πÅ‡∏™‡∏î‡∏á‡∏ä‡∏∑‡πà‡∏≠‡∏ö‡∏£‡∏¥‡∏©‡∏±‡∏ó‡∏•‡∏π‡∏Å‡∏Ñ‡πâ‡∏≤ ‡∏ó‡∏µ‡πà‡∏≠‡∏¢‡∏π‡πà‡πÉ‡∏ô‡πÄ‡∏°‡∏∑‡∏≠‡∏á London , Cowes ‡∏ó‡∏µ‡πà‡∏™‡∏±‡πà‡∏á‡∏ã‡∏∑‡πâ‡∏≠‡∏™‡∏¥‡∏ô‡∏Ñ‡πâ‡∏≤‡∏õ‡∏£‡∏∞‡πÄ‡∏†‡∏ó Seafood ‡∏à‡∏≤‡∏Å‡∏ö‡∏£‡∏¥‡∏©‡∏±‡∏ó‡∏ï‡∏±‡∏ß‡πÅ‡∏ó‡∏ô‡∏à‡∏≥‡∏´‡∏ô‡πà‡∏≤‡∏¢‡∏ó‡∏µ‡πà‡∏≠‡∏¢‡∏π‡πà‡πÉ‡∏ô‡∏õ‡∏£‡∏∞‡πÄ‡∏ó‡∏®‡∏ç‡∏µ‡πà‡∏õ‡∏∏‡πà‡∏ô‡∏£‡∏ß‡∏°‡∏°‡∏π‡∏•‡∏Ñ‡πà‡∏≤‡∏≠‡∏≠‡∏Å‡∏°‡∏≤‡πÄ‡∏õ‡πá‡∏ô‡πÄ‡∏á‡∏¥‡∏ô‡∏î‡πâ‡∏ß‡∏¢
+SELECT cu.CompanyName, SUM(od.UnitPrice * od.Quantity * (1 - od.Discount)) AS TotalSales
+FROM Customers cu
+JOIN Orders o ON cu.CustomerID = o.CustomerID
+JOIN [Order Details] od ON o.OrderID = od.OrderID
+JOIN Products p ON od.ProductID = p.ProductID
+JOIN Categories c ON p.CategoryID = c.CategoryID
+JOIN Suppliers s ON p.SupplierID = s.SupplierID
+WHERE cu.City IN ('London','Cowes')
+  AND c.CategoryName = 'Seafood'
+  AND s.Country = 'Japan'
+GROUP BY cu.CompanyName
+-- 16.  ‡πÅ‡∏™‡∏î‡∏á‡∏£‡∏´‡∏±‡∏™‡∏ö‡∏£‡∏¥‡∏©‡∏±‡∏ó‡∏Ç‡∏ô‡∏™‡πà‡∏á ‡∏ä‡∏∑‡πà‡∏≠‡∏ö‡∏£‡∏¥‡∏©‡∏±‡∏ó‡∏Ç‡∏ô‡∏™‡πà‡∏á ‡∏à‡∏≥‡∏ô‡∏ß‡∏ôorders ‡∏ó‡∏µ‡πà‡∏™‡πà‡∏á ‡∏Ñ‡πà‡∏≤‡∏Ç‡∏ô‡∏™‡πà‡∏á‡∏ó‡∏±‡πâ‡∏á‡∏´‡∏°‡∏î  ‡πÄ‡∏â‡∏û‡∏≤‡∏∞‡∏ó‡∏µ‡πà‡∏™‡πà‡∏á‡πÑ‡∏õ‡∏õ‡∏£‡∏∞‡πÄ‡∏ó‡∏® USA
+SELECT s.ShipperID, s.CompanyName,
+       COUNT(o.OrderID) AS OrderCount,
+       SUM(o.Freight) AS TotalFreight
+FROM Shippers s
+JOIN Orders o ON s.ShipperID = o.ShipVia
+WHERE o.ShipCountry = 'USA'
+GROUP BY s.ShipperID, s.CompanyName
+-- 17.  ‡∏à‡∏á‡πÅ‡∏™‡∏î‡∏á‡πÄ‡∏ï‡πá‡∏°‡∏ä‡∏∑‡πà‡∏≠‡∏û‡∏ô‡∏±‡∏Å‡∏á‡∏≤‡∏ô ‡∏ó‡∏µ‡πà‡∏°‡∏µ‡∏≠‡∏≤‡∏¢‡∏∏‡∏°‡∏≤‡∏Å‡∏Å‡∏ß‡πà‡∏≤ 60‡∏õ‡∏µ ‡∏à‡∏á‡πÅ‡∏™‡∏î‡∏á ‡∏ä‡∏∑‡πà‡∏≠‡∏ö‡∏£‡∏¥‡∏©‡∏±‡∏ó‡∏•‡∏π‡∏Å‡∏Ñ‡πâ‡∏≤,‡∏ä‡∏∑‡πà‡∏≠‡∏ú‡∏π‡πâ‡∏ï‡∏¥‡∏î‡∏ï‡πà‡∏≠,‡πÄ‡∏ö‡∏≠‡∏£‡πå‡πÇ‡∏ó‡∏£,Fax,‡∏¢‡∏≠‡∏î‡∏£‡∏ß‡∏°‡∏Ç‡∏≠‡∏á‡∏™‡∏¥‡∏ô‡∏Ñ‡πâ‡∏≤‡∏õ‡∏£‡∏∞‡πÄ‡∏†‡∏ó Condiment ‡∏ó‡∏µ‡πà‡∏•‡∏π‡∏Å‡∏Ñ‡πâ‡∏≤‡πÅ‡∏ï‡πà‡∏•‡∏∞‡∏£‡∏≤‡∏¢‡∏ã‡∏∑‡πâ‡∏≠ ‡πÅ‡∏™‡∏î‡∏á‡πÄ‡∏õ‡πá‡∏ô‡∏ó‡∏®‡∏ô‡∏¥‡∏¢‡∏°4‡∏ï‡∏≥‡πÅ‡∏´‡∏ô‡πà‡∏á,‡πÅ‡∏•‡∏∞‡πÅ‡∏™‡∏î‡∏á‡πÄ‡∏â‡∏û‡∏≤‡∏∞‡∏•‡∏π‡∏Å‡∏Ñ‡πâ‡∏≤‡∏ó‡∏µ‡πà‡∏°‡∏µ‡πÄ‡∏ö‡∏≠‡∏£‡πå‡πÅ‡∏ü‡∏Å‡∏ã‡πå
+SELECT (e.FirstName + ' ' + e.LastName) AS EmployeeName,
+       c.CompanyName, c.ContactName, c.Phone, c.Fax,
+       ROUND(SUM(od.UnitPrice * od.Quantity * (1 - od.Discount)),4) AS CondimentSales
+FROM Employees e
+JOIN Orders o ON e.EmployeeID = o.EmployeeID
+JOIN Customers c ON o.CustomerID = c.CustomerID
+JOIN [Order Details] od ON o.OrderID = od.OrderID
+JOIN Products p ON od.ProductID = p.ProductID
+JOIN Categories ca ON p.CategoryID = ca.CategoryID
+WHERE ca.CategoryName = 'Condiments'
+  AND c.Fax IS NOT NULL
+  AND DATEDIFF(YEAR, e.BirthDate, GETDATE()) > 60
+GROUP BY e.FirstName, e.LastName, c.CompanyName, c.ContactName, c.Phone, c.Fax
+-- 18.  ‡∏à‡∏á‡πÅ‡∏™‡∏î‡∏á‡∏Ç‡πâ‡∏≠‡∏°‡∏π‡∏•‡∏ß‡πà‡∏≤ ‡∏ß‡∏±‡∏ô‡∏ó‡∏µ‡πà  3 ‡∏°‡∏¥‡∏ñ‡∏∏‡∏ô‡∏≤‡∏¢‡∏ô 2541 ‡∏û‡∏ô‡∏±‡∏Å‡∏á‡∏≤‡∏ô‡πÅ‡∏ï‡πà‡∏•‡∏∞‡∏Ñ‡∏ô ‡∏Ç‡∏≤‡∏¢‡∏™‡∏¥‡∏ô‡∏Ñ‡πâ‡∏≤ ‡πÑ‡∏î‡πâ‡πÄ‡∏õ‡πá‡∏ô‡∏¢‡∏≠‡∏î‡πÄ‡∏á‡∏¥‡∏ô‡πÄ‡∏ó‡πà‡∏≤‡πÉ‡∏î ‡∏û‡∏£‡πâ‡∏≠‡∏°‡∏ó‡∏±‡πâ‡∏á‡πÅ‡∏™‡∏î‡∏á‡∏ä‡∏∑‡πà‡∏≠‡∏Ñ‡∏ô‡∏ó‡∏µ‡πà‡πÑ‡∏°‡πà‡πÑ‡∏î‡πâ‡∏Ç‡∏≤‡∏¢‡∏Ç‡∏≠‡∏á‡∏î‡πâ‡∏ß‡∏¢
+SELECT (e.FirstName + ' ' + e.LastName) AS EmployeeName,
+       ISNULL(SUM(od.UnitPrice * od.Quantity * (1 - od.Discount)),0) AS Sales
+FROM Employees e
+LEFT JOIN Orders o ON e.EmployeeID = o.EmployeeID AND CONVERT(DATE,o.OrderDate)='1998-06-03'
+LEFT JOIN [Order Details] od ON o.OrderID = od.OrderID
+GROUP BY e.FirstName, e.LastName
+-- 19.  ‡∏à‡∏á‡πÅ‡∏™‡∏î‡∏á‡∏£‡∏´‡∏±‡∏™‡∏£‡∏≤‡∏¢‡∏Å‡∏≤‡∏£‡∏™‡∏±‡πà‡∏á‡∏ã‡∏∑‡πâ‡∏≠ ‡∏ä‡∏∑‡πà‡∏≠‡∏û‡∏ô‡∏±‡∏Å‡∏á‡∏≤‡∏ô ‡∏ä‡∏∑‡πà‡∏≠‡∏ö‡∏£‡∏¥‡∏©‡∏±‡∏ó‡∏•‡∏π‡∏Å‡∏Ñ‡πâ‡∏≤ ‡πÄ‡∏ö‡∏≠‡∏£‡πå‡πÇ‡∏ó‡∏£ ‡∏ß‡∏±‡∏ô‡∏ó‡∏µ‡πà‡∏•‡∏π‡∏Å‡∏Ñ‡πâ‡∏≤‡∏ï‡πâ‡∏≠‡∏á‡∏Å‡∏≤‡∏£‡∏™‡∏¥‡∏ô‡∏Ñ‡πâ‡∏≤ ‡πÄ‡∏â‡∏û‡∏≤‡∏∞‡∏£‡∏≤‡∏¢‡∏Å‡∏≤‡∏£‡∏ó‡∏µ‡πà‡∏°‡∏µ‡∏û‡∏ô‡∏±‡∏Å‡∏á‡∏≤‡∏ô‡∏ä‡∏∑‡πà‡∏≠‡∏°‡∏≤‡∏Å‡∏≤‡πÄ‡∏£‡πá‡∏ï‡πÄ‡∏õ‡πá‡∏ô‡∏Ñ‡∏ô‡∏£‡∏±‡∏ö‡∏ú‡∏¥‡∏î‡∏ä‡∏≠‡∏ö‡∏û‡∏£‡πâ‡∏≠‡∏°‡∏ó‡∏±‡πâ‡∏á‡πÅ‡∏™‡∏î‡∏á‡∏¢‡∏≠‡∏î‡πÄ‡∏á‡∏¥‡∏ô‡∏£‡∏ß‡∏°‡∏ó‡∏µ‡πà‡∏•‡∏π‡∏Å‡∏Ñ‡πâ‡∏≤‡∏ï‡πâ‡∏≠‡∏á‡∏ä‡∏≥‡∏£‡∏∞‡∏î‡πâ‡∏ß‡∏¢ (‡∏ó‡∏®‡∏ô‡∏¥‡∏¢‡∏° 2 ‡∏ï‡∏≥‡πÅ‡∏´‡∏ô‡πà‡∏á)
+SELECT o.OrderID,
+       (e.FirstName + ' ' + e.LastName) AS EmployeeName,
+       c.CompanyName, c.Phone,
+       o.RequiredDate,
+       ROUND(SUM(od.UnitPrice * od.Quantity * (1 - od.Discount)),2) AS TotalAmount
+FROM Orders o
+JOIN Employees e ON o.EmployeeID = e.EmployeeID
+JOIN Customers c ON o.CustomerID = c.CustomerID
+JOIN [Order Details] od ON o.OrderID = od.OrderID
+WHERE e.FirstName='Margaret'
+GROUP BY o.OrderID, e.FirstName, e.LastName, c.CompanyName, c.Phone, o.RequiredDate;
+
+-- 20.  ‡∏à‡∏á‡πÅ‡∏™‡∏î‡∏á‡∏ä‡∏∑‡πà‡∏≠‡πÄ‡∏ï‡πá‡∏°‡∏û‡∏ô‡∏±‡∏Å‡∏á‡∏≤‡∏ô ‡∏≠‡∏≤‡∏¢‡∏∏‡∏á‡∏≤‡∏ô‡πÄ‡∏õ‡πá‡∏ô‡∏õ‡∏µ ‡πÅ‡∏•‡∏∞‡πÄ‡∏õ‡πá‡∏ô‡πÄ‡∏î‡∏∑‡∏≠‡∏ô ‡∏¢‡∏≠‡∏î‡∏Ç‡∏≤‡∏¢‡∏£‡∏ß‡∏°‡∏ó‡∏µ‡πà‡∏Ç‡∏≤‡∏¢‡πÑ‡∏î‡πâ ‡πÄ‡∏•‡∏∑‡∏≠‡∏Å‡∏°‡∏≤‡πÄ‡∏â‡∏û‡∏≤‡∏∞‡∏•‡∏π‡∏Å‡∏Ñ‡πâ‡∏≤‡∏ó‡∏µ‡πà‡∏≠‡∏¢‡∏π‡πà‡πÉ‡∏ô USA, Canada, Mexico ‡πÅ‡∏•‡∏∞‡∏≠‡∏¢‡∏π‡πà‡πÉ‡∏ô‡πÑ‡∏ï‡∏£‡∏°‡∏≤‡∏®‡πÅ‡∏£‡∏Å‡∏Ç‡∏≠‡∏á‡∏õ‡∏µ 2541
+SELECT (e.FirstName + ' ' + e.LastName) AS EmployeeName,
+       DATEDIFF(YEAR, e.HireDate, GETDATE()) AS Years,
+       DATEDIFF(MONTH, e.HireDate, GETDATE()) AS Months,
+       SUM(od.UnitPrice * od.Quantity * (1 - od.Discount)) AS TotalSales
+FROM Employees e
+JOIN Orders o ON e.EmployeeID = o.EmployeeID
+JOIN [Order Details] od ON o.OrderID = od.OrderID
+JOIN Customers c ON o.CustomerID = c.CustomerID
+WHERE YEAR(o.OrderDate)=1998
+  AND MONTH(o.OrderDate) BETWEEN 1 AND 3
+  AND c.Country IN ('USA','Canada','Mexico')
+GROUP BY e.FirstName, e.LastName, e.HireDate;

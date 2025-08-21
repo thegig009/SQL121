@@ -33,7 +33,13 @@ select p.ProductID,p.ProductName,s.CompanyName,s.Country
 from Products p , Suppliers s 
 where p.SupplierID= s.SupplierID
 
-select * 
+select CompanyName, OrderID 
 from Orders ,Shippers 
 where Shippers.ShipperID = Orders.ShipVia
 AND OrderID = 10275
+
+select CompanyName, OrderID 
+from Orders JOIN Shippers 
+on Shippers.ShipperID = Orders.ShipVia
+AND OrderID = 10275
+
